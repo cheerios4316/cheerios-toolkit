@@ -1,0 +1,21 @@
+{
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "npx tailwindcss -i ./tailwind/init.css -o ./public/css/tailwind.css",
+    "build-mini": "npx tailwindcss -i ./tailwind/init.css -o ./public/css/tailwind-mini.css --minify"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.41",
+    "tailwindcss": "^3.4.9"
+  },
+  "dependencies": {
+    "@tailwindcss/aspect-ratio": "^0.4.2"
+  }
+}

@@ -1,0 +1,27 @@
+{
+    "name": "vendor/cheerios-toolkit",
+    "description": "my very own funky toolkit",
+    "authors": [
+        {
+            "name": "cheerios 4316",
+            "email": "no@mail.lol"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Src\\": "src/",
+            "Detection\\": "vendor/mobiledetect/mobiledetectlib/src/Detection/"
+        },
+        "classmap": [
+            "src/"
+        ]
+    },
+    "require": {
+        "symfony/var-dumper": "^5",
+        "vlucas/phpdotenv": "^5.6",
+        "fortawesome/font-awesome": "*",
+        "filp/whoops": "^2.15",
+        "components/jquery": "^3.7",
+        "mobiledetect/mobiledetectlib": "^4.8"
+    }
+}
