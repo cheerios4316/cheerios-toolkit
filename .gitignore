@@ -3,4 +3,4 @@ vendor
 .env
 package-lock.json
 composer.lock
-/public/css/tailwind.css
+public/css/tailwind.css
