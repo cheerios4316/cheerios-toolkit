@@ -18,29 +18,35 @@ class Container
     }
 
     /**
-     * Creates a new instance of a class. $getCached returns the latest cached instance of the class.
+     * Creates a new instance of a class. If true, the second argument skips storing in cache
      * 
      * @param string $class
-     * @param bool $getCached
      * @throws ContainerException
      * @return object|null
      */
-    public function create(string $class, bool $getCached = false): object|null
+    public function create(string $class, bool $skipCache = false): object|null
     {
         $reflection = new ReflectionClass($class);
 
         $cachedHash = md5($class);
 
-        if($getCached && $cachedInstance = self::$cached[$cachedHash]) {
-            return $cachedInstance;
-        }
-
         $deps = $this->dependencyResolver->resolve($reflection);
 
         $instance = $reflection->newInstanceArgs($deps);
 
-        self::$cached[$cachedHash] = $instance;
+        !$skipCache && self::$cached[$cachedHash] = $instance;
         return $instance;
+    }
+
+    public function getCached(string $class): object|null
+    {
+        $cachedHash = md5($class);
+
+        if(!array_key_exists($cachedHash, self::$cached)) {
+            return $this->create($class);
+        }
+
+        return self::$cached[$cachedHash];
     }
 
     public static function getInstance(): self
