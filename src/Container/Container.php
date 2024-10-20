@@ -32,7 +32,6 @@ class Container
         $cachedHash = md5($class);
 
         if($getCached && $cachedInstance = self::$cached[$cachedHash]) {
-            dump("cached!");
             return $cachedInstance;
         }
 

@@ -10,12 +10,10 @@ class RedirectManager
     protected static array $pathToController = [];
 
     protected PageLoader $pageLoader;
-    protected StringUtils $stringUtils;
 
-    public function __construct()
+    public function __construct(PageLoader $pageLoader)
     {
-        $this->pageLoader = new PageLoader();
-        $this->stringUtils = new StringUtils();
+        $this->pageLoader = $pageLoader;
     }
 
     public function redirect($destination)

@@ -5,12 +5,11 @@ use Src\Classes\PageManager\PageManager;
 use Src\Classes\RedirectManager;
 use Src\Container\Container;
 
+require_once __DIR__ . '/vendor/autoload.php';
+
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
-
-
-require_once __DIR__ . '/vendor/autoload.php';
 
 session_start();
 
@@ -25,11 +24,11 @@ if ($_SERVER['HTTP_HOST'] === 'localhost') {
     $whoops->register();
 }
 
-// Custom redirect manager
-$redirectManager = new RedirectManager();
+$container = Container::getInstance();
 
-$pageManager = Container::getInstance()->create(PageManager::class);
+// Custom redirect manager
+$redirectManager = $container->create(RedirectManager::class);
+$pageManager = $container->create(PageManager::class);
 
 $pageManager->renderHead();
-
 $redirectManager->autoloadControllers()->loadPage($_SERVER['REQUEST_URI']);
