@@ -3,8 +3,9 @@ namespace Src\Controllers;
 use Src\Classes\RedirectManager;
 use Src\Components\Page404Component\Page404Component;
 use Src\Components\PageComponent\PageComponent;
+use Src\Container\Container;
 
-abstract class Controller
+class BaseController
 {
     /**
      * When true page is restricted to logged users
@@ -13,14 +14,20 @@ abstract class Controller
     protected bool $isLoginProtected = false;
     protected RedirectManager $redirectManager;
 
+    protected static string $url = '';
+
+    protected Container $container;
+
     /**
      * No dependency injection because there is no time.
      * Initialize dependencies directly in the constructor and
      * call parent::__construct() in child classes.
      */
-    public function __construct()
+    public function __construct(RedirectManager $redirectManager)
     {
-        $this->redirectManager = new RedirectManager();
+        $this->redirectManager = $redirectManager;
+        $this->container = Container::getInstance();
+        
         $this->loginProtect();
     }
 
@@ -45,8 +52,11 @@ abstract class Controller
 
     protected function render404()
     {
-        (new Page404Component())->render();
+        //(new Page404Component())->render();
     }
 
-    protected abstract function generatePage(): PageComponent;
+    public static function getUrl(): string
+    {
+        return self::$url;
+    }
 }

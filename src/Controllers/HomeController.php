@@ -4,10 +4,15 @@ namespace Src\Controllers;
 use Src\Components\PageComponent\HomePageComponent\HomePageComponent;
 use Src\Components\PageComponent\PageComponent;
 
-class HomeController extends Controller
+class HomeController extends BaseController implements ControllerInterface
 {
-    protected function generatePage(): PageComponent
+    public function generatePage(): PageComponent
     {
-        return new HomePageComponent();
+        return $this->container->create(HomePageComponent::class);
+    }
+
+    public static function getUrl(): string
+    {
+        return 'home';
     }
 }

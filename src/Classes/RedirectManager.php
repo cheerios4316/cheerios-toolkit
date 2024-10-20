@@ -1,24 +1,21 @@
 <?php
 
 namespace Src\Classes;
-
-use Src\Controllers\JoinUsController;
-use Src\Controllers\MentorsController;
-use Src\Controllers\Page404Controller;
+use ReflectionClass;
+use Src\Controllers\ControllerInterface;
 use Src\Controllers\HomeController;
-use Src\Controllers\PartnershipController;
-use Src\Controllers\PeopleController;
-use Src\Controllers\UisPartnershipController;
 
 class RedirectManager
 {
     protected static array $pathToController = [];
 
+    protected PageLoader $pageLoader;
+    protected StringUtils $stringUtils;
+
     public function __construct()
     {
-        if (empty(self::$pathToController)) {
-            $this->setControllers();
-        }
+        $this->pageLoader = new PageLoader();
+        $this->stringUtils = new StringUtils();
     }
 
     public function redirect($destination)
@@ -27,17 +24,38 @@ class RedirectManager
         exit();
     }
 
-    private function setControllers()
+    public function autoloadControllers(): self
     {
-        // this method adds to self::$pathToController
-        $this
-            ->addController('/home', HomeController::class)
-        ;
+        $controllerPath = __DIR__ . '/src/Controllers';
+        foreach (glob($controllerPath . '/*.php') as $file) {
+            require_once $file;
+        }
+
+        $implementations = [];
+
+        foreach (get_declared_classes() as $class) {
+            $reflect = new ReflectionClass($class);
+            if ($reflect->implementsInterface(ControllerInterface::class)) {
+                $implementations[] = $class;
+            }
+        }
+
+        $this->setControllers($implementations);
+        return $this;
+    }
+
+    public function setControllers(array $controllers)
+    {
+        foreach ($controllers as $name => $controller) {
+            $this->addController($controller::getUrl(), $controller);
+        }
     }
 
     private function addController($path, $controller): self
     {
-        self::$pathToController[$path] = $controller;
+        if (!empty($path)) {
+            self::$pathToController[$path] = $controller;
+        }
         return $this;
     }
 
@@ -45,17 +63,20 @@ class RedirectManager
     {
         $uriData = parse_url($uri);
 
-        $paths = self::$pathToController;
-
         if ($uriData['path'] == '/') {
             $this->redirect('/home');
         }
 
-        if (key_exists($uriData['path'], $paths)) {
-            $controllerClass = $paths[$uriData['path']];
-            (new $controllerClass())->renderPage();
-        } else {
-            (new Page404Controller())->renderPage();
+        if (!StringUtils::endsWith($uriData['path'], '/')) {
+            $query = '';
+
+            if (!empty($uriData['query'] ?? '')) {
+                $query = '?' . $uriData['query'];
+            }
+
+            $this->redirect($uriData['path'] . '/' . $query);
         }
+
+        $this->pageLoader->loadPage($uriData, self::$pathToController);
     }
 }

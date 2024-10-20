@@ -3,12 +3,19 @@
 namespace Src\Controllers;
 
 use Src\Components\Page404Component\Page404Component;
+use Src\Components\PageComponent\HomePageComponent\HomePageComponent;
 use Src\Components\PageComponent\PageComponent;
 
-class Page404Controller extends Controller
+class Page404Controller extends BaseController implements ControllerInterface
 {
-    protected function generatePage(): PageComponent
+    public function generatePage(): PageComponent
     {
-        return new Page404Component();
+        return new HomePageComponent();
+        //return new Page404Component();
+    }
+
+    public static function getUrl(): string
+    {
+        return '';
     }
 }

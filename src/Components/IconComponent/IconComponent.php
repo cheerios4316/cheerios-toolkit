@@ -13,6 +13,11 @@ class IconComponent extends Component
 
     protected ?string $type = null;
 
+    public function __construct()
+    {
+        //something
+    }
+
     /**
      * @param string $icon
      * @return IconComponent
