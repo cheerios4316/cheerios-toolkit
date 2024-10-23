@@ -58,6 +58,9 @@ class AjaxController
     protected function response(array $data, int $statusCode = 200): void
     {
         header('Content-Type: application/json');
+
+        $statusCode = $data['status'] ?? $statusCode;
+        
         http_response_code($statusCode);
 
         $data = ["status" => $statusCode, ...$data];
