@@ -3,6 +3,7 @@
 use Dotenv\Dotenv;
 use Src\Classes\PageManager\PageManager;
 use Src\Classes\RedirectManager;
+use Src\Classes\StackTraceManager\WhoopsStackTrace;
 use Src\Container\Container;
 
 require_once __DIR__ . '/vendor/autoload.php';
@@ -17,20 +18,15 @@ session_start();
 $dotenv = Dotenv::createImmutable(__DIR__);
 $dotenv->load();
 
-// Init Whoops stack trace for development only
-if ($_SERVER['HTTP_HOST'] === 'localhost') {
-    $whoops = new \Whoops\Run;
-    $whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler);
-    $whoops->register();
-}
-
 $container = Container::getInstance();
+
+// Init Whoops stack trace for development only
+$container->create(WhoopsStackTrace::class)->init();
 
 // Custom redirect manager
 $redirectManager = $container->create(RedirectManager::class);
-$pageManager = $container->create(PageManager::class);
 
 // Manage dependencies like favicon, JS and CSS in the PageManager
-$pageManager->renderHead();
+$pageManager = $container->create(class: PageManager::class)->renderHead();
 
 $redirectManager->autoloadControllers()->loadPage($_SERVER['REQUEST_URI']);
