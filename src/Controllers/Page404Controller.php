@@ -10,7 +10,7 @@ class Page404Controller extends BaseController implements ControllerInterface
 {
     public function generatePage(): PageComponent
     {
-        return new HomePageComponent();
+        //return new HomePageComponent();
         //return new Page404Component();
     }
 

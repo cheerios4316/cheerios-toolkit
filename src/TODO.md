@@ -1,0 +1,3 @@
+- Refactor di RedirectManager
+- Togliere init stack trace dall'index
+- Implementare modo per i componenti di renderizzare la vista del loro parent

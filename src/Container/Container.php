@@ -33,8 +33,8 @@ class Container
         $deps = $this->dependencyResolver->resolve($reflection);
 
         $instance = $reflection->newInstanceArgs($deps);
-
         !$skipCache && self::$cached[$cachedHash] = $instance;
+        
         return $instance;
     }
 

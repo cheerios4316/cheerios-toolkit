@@ -1,7 +1,6 @@
 <?php
 
 namespace Src\Components\PageComponent\HomePageComponent;
-use Src\Controllers\ControllerInterface;
 
 /**
  * @var HomePageComponent $this

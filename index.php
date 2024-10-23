@@ -30,5 +30,7 @@ $container = Container::getInstance();
 $redirectManager = $container->create(RedirectManager::class);
 $pageManager = $container->create(PageManager::class);
 
+// Manage dependencies like favicon, JS and CSS in the PageManager
 $pageManager->renderHead();
+
 $redirectManager->autoloadControllers()->loadPage($_SERVER['REQUEST_URI']);

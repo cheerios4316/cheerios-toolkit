@@ -3,7 +3,6 @@
 namespace Src\Classes;
 use ReflectionClass;
 use Src\Controllers\ControllerInterface;
-use Src\Controllers\HomeController;
 
 class RedirectManager
 {
@@ -24,7 +23,7 @@ class RedirectManager
 
     public function autoloadControllers(): self
     {
-        $controllerPath = __DIR__ . '/src/Controllers';
+        $controllerPath = $_SERVER['DOCUMENT_ROOT'] . '/src/Controllers';
         foreach (glob($controllerPath . '/*.php') as $file) {
             require_once $file;
         }
@@ -57,13 +56,21 @@ class RedirectManager
         return $this;
     }
 
+    protected function handleSpecialPaths(string $path)
+    {
+        switch($path)
+        {
+            case '/':
+                $this->redirect('/home');
+                break;
+        }
+    }
+
     public function loadPage(string $uri)
     {
         $uriData = parse_url($uri);
 
-        if ($uriData['path'] == '/') {
-            $this->redirect('/home');
-        }
+        $this->handleSpecialPaths($uriData['path']);
 
         if (!StringUtils::endsWith($uriData['path'], '/')) {
             $query = '';

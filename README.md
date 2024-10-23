@@ -7,7 +7,7 @@ Run `composer install`, `npm install` and `npm run build`
 `npm run build` builds the CSS for the project.
 Tailwind init file is located in `/tailwind/init.css`
 
-## Create a new page
+# Creating a web page
 To create a new page at a given URL (like "/examplepage/"):
 - Create a new class inside `src/Controllers`that extends `BaseController` and implements `ControllerInterface`:
 
@@ -26,6 +26,7 @@ class ExampleController extends BaseController implements ControllerInterface
     }
 }
 ```
+More on the container later.
 
 - Create a new class inside `src/Components/PageComponent/ExamplePageComponent` that extends `PageComponent`. More on components later
 
@@ -54,3 +55,28 @@ class ExamplePageComponent extends PageComponent
 
 Now the URL yourwebsite.domain/examplepage/ will display a page with the text "Sample text".
 
+# About components
+
+To create a component, create a new class that extends `Component`. Make an `ExampleComponent` folder inside the path `/src/Components` and create `ExampleComponent.php`:
+
+```php
+
+class ExampleComponent extends Component
+{
+    protected $name = 'example';
+    protected $area = 'ExampleComponent';
+}
+
+```
+
+`$name` is the name of the files that will make the HTML / JS / CSS template of the component, while `$area` is the name of the subfolder of `/src/Components` in which the files are located.
+
+Now that you've created the class, create a file `example.php` in the same directory:
+```html
+<div class="example-component">
+    Some content for the component
+</div>
+```
+
+That's it! You've created your first component. Now add some functionality to it.
+Override CONTINUARE!!

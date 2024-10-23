@@ -13,6 +13,8 @@ RewriteRule ^ - [L]
 # redirect /api and any sub-paths to src/api/api_controller.php
 # uncomment following line when implementing custom api
 # RewriteRule ^api(/.*)?$ src/api/api_controller.php [QSA,L]
+RewriteRule ^ajax(/.*)?$ src/Ajax/ajax_actions.php [QSA,L]
+
 
 # ensure all other requests go to index.php
 RewriteCond %{REQUEST_URI} !^/public/

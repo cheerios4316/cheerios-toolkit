@@ -9,5 +9,5 @@ namespace Src\Components\FooterComponent;
 ?>
 
 <div class="footer-component">
-    
+    gugaga
 </div>
