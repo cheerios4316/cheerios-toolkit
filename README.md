@@ -77,6 +77,3 @@ Now that you've created the class, create a file `example.php` in the same direc
     Some content for the component
 </div>
 ```
-
-That's it! You've created your first component. Now add some functionality to it.
-Override CONTINUARE!!
