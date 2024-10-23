@@ -18,11 +18,6 @@ class BaseController
 
     protected Container $container;
 
-    /**
-     * No dependency injection because there is no time.
-     * Initialize dependencies directly in the constructor and
-     * call parent::__construct() in child classes.
-     */
     public function __construct(RedirectManager $redirectManager)
     {
         $this->redirectManager = $redirectManager;

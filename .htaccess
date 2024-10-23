@@ -1,3 +1,5 @@
+AddType application/javascript .js
+
 RewriteEngine On
 
 # disable directory listing

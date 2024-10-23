@@ -20,6 +20,10 @@ class PageManager
 
     private array $defaultDependencies = [
         [
+            "type" => "script",
+            "link" => "/vendor/components/jquery/jquery.min.js"
+        ],
+        [
             "type" => "stylesheet",
             "link" => "/public/css/tailwind.css"
         ],

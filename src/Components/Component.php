@@ -9,7 +9,7 @@ class Component
 {
     use StyleProps;
     protected $name = '';
-    protected $scope = 'src/Components';
+    protected $scope = './src/Components';
     protected $area = '';
 
     protected static $loaded_css = [];
@@ -23,9 +23,15 @@ class Component
 
     protected function applySettings()
     {
+
     }
 
     public function render(): void
+    {
+        echo $this->content(true);
+    }
+
+    public function content(bool $includeAssets = false): string
     {
         $this->applySettings();
 
@@ -35,67 +41,84 @@ class Component
         $cssFilename = $basePath . '.css';
         $jsFilename = $basePath . '.js';
 
+        $assets = [];
+
+        if ($includeAssets) {
+            $assets = [
+                'component_css' => $cssFilename,
+                'component_js' => $jsFilename,
+            ];
+        }
+
         $fileList = [
-            'component_css' => $cssFilename,
-            'component_js' => $jsFilename,
+            ...$assets,
             'component' => $filename,
         ];
 
-        $this->loadFiles($fileList);
+        return $this->loadFiles($fileList);
     }
 
-    private function loadFiles(array $list): void
+    private function loadFiles(array $list): string
     {
+        $html = '';
         foreach ($list as $file) {
             if (file_exists($file)) {
-                $this->loadFile($file);
+                $html .= $this->loadFile($file);
             }
         }
+
+        return $html;
     }
 
-    protected function loadFile(string $file)
+    protected function loadFile(string $file): string
     {
         if (StringUtils::endsWith($file, '.css')) {
             if (!in_array($file, self::$loaded_css)) {
-                $this->loadCss($file);
+                return $this->loadCss($file);
             }
-        } else if (StringUtils::endsWith($file, '.js')) {
+        } elseif (StringUtils::endsWith($file, '.js')) {
             if (!in_array($file, self::$loaded_js)) {
-                $this->loadJs($file);
+                return $this->loadJs($file);
             }
-        } else if (StringUtils::endsWith($file, '.php')) {
+        } elseif (StringUtils::endsWith($file, '.php')) {
+            ob_start();
             require $file;
+            return ob_get_clean();
         }
+        return '';
     }
 
-    protected function loadCss(string $file)
+    protected function loadCss(string $file): string
     {
         self::$loaded_css[] = $file;
-        $line = '<link rel="stylesheet" type="text/css" href="/' . htmlspecialchars($file) . '">';
-        echo $line;
+        return '<link rel="stylesheet" type="text/css" href="/' . htmlspecialchars($file) . '">';
     }
 
-    protected function loadJs(string $file)
+    protected function loadJs(string $file): string
     {
         self::$loaded_js[] = $file;
-        echo '<script src="' . htmlspecialchars($file) . '"></script>';
+        return '<script type="application/javascript" src="/' . htmlspecialchars($file) . '"></script>';
     }
 
-    public function getItems(): array {
+    public function getItems(): array
+    {
         return $this->items;
     }
-    
-    public function setItems(array $arr) {
+
+    public function setItems(array $arr)
+    {
         $this->items = $arr;
         return $this;
     }
 
-    public function addItem($item) {
+    public function addItem($item)
+    {
         $this->items[] = $item;
         return $this;
     }
 
-    public function addItems(...$items) {
+    public function addItems(...$items)
+    {
         $this->items = [...$this->items, ...$items];
         return $this;
     }
@@ -103,7 +126,7 @@ class Component
     public function renderDataAttrs(): string
     {
         $res = '';
-        foreach($this->dataAttrs as $key=>$val) {
+        foreach ($this->dataAttrs as $key => $val) {
             $escaped = htmlspecialchars($val);
             $res .= "data-$key=\"$escaped\" ";
         }
