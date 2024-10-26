@@ -44,6 +44,8 @@ class Component
 
     public function content(bool $includeAssets = false): string
     {
+        $this->applySettings();
+        
         return $this->getComponentLoader()->getHtml($includeAssets);
     }
 
