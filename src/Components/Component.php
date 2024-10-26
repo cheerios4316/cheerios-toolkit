@@ -50,7 +50,7 @@ class Component
 
     public final function getComponentPath(): string
     {
-        return $_SERVER['DOCUMENT_ROOT'] . '/' . $this->scope . '/' . $this->area;
+        return $this->scope . '/' . $this->area;
     }
 
     public final function getComponentName(): string
