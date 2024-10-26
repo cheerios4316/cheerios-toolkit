@@ -4,3 +4,4 @@ vendor
 package-lock.json
 composer.lock
 public/css/tailwind.css
+src/AutoCacher/cache_files

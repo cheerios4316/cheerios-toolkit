@@ -2,7 +2,6 @@
 
 namespace Src\Components;
 
-use Src\Classes\StringUtils;
 use Src\ComponentLoader\ComponentLoader;
 use Src\Components\StyleProps;
 use Src\Container\Container;
@@ -19,6 +18,8 @@ class Component
     protected $items = [];
 
     protected $dataAttrs = [];
+
+    protected ?ComponentLoader $componentLoader = null;
 
     protected function applySettings()
     {
@@ -43,9 +44,29 @@ class Component
 
     public function content(bool $includeAssets = false): string
     {
-        $loader = Container::getInstance()->create(ComponentLoader::class);
+        return $this->getComponentLoader()->getHtml($includeAssets);
+    }
 
-        return $loader->setComponent($this)->getHtml($includeAssets);
+    public function parentContent(bool $includeAssets = true): string
+    {
+        $parentClass = get_parent_class($this);;
+
+        if(!is_subclass_of($parentClass, Component::class)) {
+            return '';
+        }
+
+        $parentInstance = Container::getInstance()->create($parentClass);
+
+        return $parentInstance->content();
+    }
+
+    protected function getComponentLoader(): ComponentLoader
+    {
+        if(!$this->componentLoader) {
+            $this->componentLoader = Container::getInstance()->create(ComponentLoader::class)->setComponent($this);
+        }
+
+        return $this->componentLoader;
     }
 
     public final function getComponentPath(): string
