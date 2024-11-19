@@ -19,8 +19,18 @@ class Component
 
     protected string $title = '';
 
+    /**
+     * Defines whether the component should be disabled or not
+     * 
+     * @var bool
+     */
     protected bool $disabled = false;
 
+    /**
+     * Defines whether data attributes should be rendered automatically
+     * 
+     * @var bool
+     */
     protected bool $renderDataAttrs = true;
 
     /**
@@ -182,29 +192,57 @@ class Component
         return $this;
     }
 
+    /**
+     * Getter for the class' name
+     * 
+     * @return string
+     */
     protected function getClassName(): string
     {
         return basename(str_replace('\\', '/', get_class($this)));
     }
 
+    /**
+     * Setter for $dataAttrs
+     * 
+     * @param array $dataAttrs
+     * @return \Src\Components\Component
+     */
     public function setDataAttrs(array $dataAttrs): self
     {
         $this->dataAttrs = $dataAttrs;
         return $this;
     }
 
+    /**
+     * Adds an element to $dataAttrs
+     * 
+     * @param string $key
+     * @param string $value
+     * @return \Src\Components\Component
+     */
     public function addDataAttr(string $key, string $value): self
     {
         $this->dataAttrs[$key] = $value;
         return $this;
     }
 
+    /**
+     * Disables the component's view
+     * 
+     * @return \Src\Components\Component
+     */
     public function disable(): self
     {
         $this->disabled = true;
         return $this;
     }
 
+    /**
+     * Returns true if data attributes should be rendered automatically
+     * 
+     * @return bool
+     */
     public function shouldRenderDataAttrs(): bool
     {
         return $this->renderDataAttrs;
