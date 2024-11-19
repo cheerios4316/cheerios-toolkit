@@ -57,7 +57,7 @@ class RedirectManager
         }
     }
 
-    public function getPage(string $uri): string
+    public function getPageHtml(string $uri): string
     {
         $uriData = parse_url($uri);
 

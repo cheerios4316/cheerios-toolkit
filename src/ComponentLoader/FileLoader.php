@@ -20,24 +20,13 @@ class FileLoader
         $this->dependencyFactory = $dependencyFactory;
     }
 
-
-    public function loadPhp(string $file, Component $component): string
-    {
-        if (!$this->checkAssets($file)) {
-            return '';
-        }
-
-        ob_start();
-
-        $this->includeFileWithBoundThis($file, $component);
-
-        $html = ob_get_clean();
-
-        $dataAttrs = $component->renderDataAttrs();
-
-        return preg_replace('/(<div[^>]*)(>)/', '$1 ' . $dataAttrs . '$2', $html, 1);
-    }
-
+    /**
+     * Binds the content of a Component's PHP file to the Component's $this context
+     * 
+     * @param string $file
+     * @param \Src\Components\Component $component
+     * @return void
+     */
     protected function includeFileWithBoundThis(string $file, Component $component): void
     {
         $includeClosure = function () use ($file) {
@@ -49,6 +38,40 @@ class FileLoader
         $boundClosure();
     }
 
+    /**
+     * Loads a PHP file
+     * 
+     * @param string $file
+     * @param Component $component
+     * @param bool $renderDataAttrs
+     * @return string
+     */
+    public function loadPhp(string $file, Component $component, bool $renderDataAttrs = true): string
+    {
+        if (!$this->checkAssets($file)) {
+            return '';
+        }
+
+        ob_start();
+
+        $this->includeFileWithBoundThis($file, $component);
+
+        $html = ob_get_clean();
+
+        if ($renderDataAttrs) {
+            $dataAttrs = $component->renderDataAttrs();
+            $html = preg_replace('/(<div[^>]*)(>)/', '$1 ' . $dataAttrs . '$2', $html, 1);
+        }
+
+        return $html;
+    }
+
+    /**
+     * Loads a JS file (enqueues into assets queue and renders in <head>)
+     * 
+     * @param string $file
+     * @return void
+     */
     public function loadJs(string $file): void
     {
         if (!$this->checkAssets($file, self::$loaded_js)) {
@@ -60,6 +83,12 @@ class FileLoader
         PageManager::addDependency($dependency);
     }
 
+    /**
+     * Loads a CSS file (enqueues into assets queue and renders in <head>)
+     * 
+     * @param string $file
+     * @return void
+     */
     public function loadCss(string $file): void
     {
         if (!$this->checkAssets($file, self::$loaded_css)) {
@@ -71,6 +100,13 @@ class FileLoader
         PageManager::addDependency($dependency);
     }
 
+    /**
+     * Checks if a file exists and it's already enqueued in the assets manager
+     * 
+     * @param string $file
+     * @param array $loaded
+     * @return bool
+     */
     protected function checkAssets(string $file, array $loaded = []): bool
     {
         if (!file_exists($file)) {

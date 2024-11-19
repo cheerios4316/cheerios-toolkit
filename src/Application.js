@@ -19,7 +19,7 @@ class Component {
 }
 
 function initializeComponents(container = document) {
-    $(container).find('[data-component]').each(function () {
+    $(container).find('[class*="-component"]').each(function () {
         const $element = $(this);
         const componentName = getComponentName(this);
 

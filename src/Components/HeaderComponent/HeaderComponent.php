@@ -23,22 +23,4 @@ class HeaderComponent extends Component
     {
         return $this->text;
     }
-
-    protected function applySettings()
-    {
-        $this->addDataAttr('application-components', json_encode($this->getAllApplications()));
-        $this->settingsIconComponent->setIcon('gear');
-    }
-
-    protected function getAllApplications()
-    {
-        return array_map(function($elem) {
-            return $elem->getModalComponent()->content(true);
-        }, $this->items);
-    }
-
-    protected function getSettingsIconComponent(): IconComponent
-    {
-        return $this->settingsIconComponent;
-    }
 }

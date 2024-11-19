@@ -3,7 +3,6 @@
 namespace Src\ComponentLoader;
 
 use Src\Components\Component;
-use Src\Components\SearchbarComponent\SearchbarComponent;
 
 class ComponentLoader
 {
@@ -29,6 +28,12 @@ class ComponentLoader
         return $this;
     }
 
+    /**
+     * Returns the HTML of a Component
+     * 
+     * @param bool $includeAssets
+     * @return string
+     */
     public function getHtml(bool $includeAssets = false): string
     {
         $this->includeAssets = $includeAssets;
@@ -44,8 +49,15 @@ class ComponentLoader
         return trim($this->loadFiles($fileNames));
     }
 
+    /**
+     * Loads the files related to a Component
+     * 
+     * @param array $files
+     * @return string
+     */
     protected function loadFiles(array $files): string
     {
+        // Includes assets even if the component is disabled
         if($this->includeAssets) {
             $this->fileLoader->loadJs($files['js'] ?? '');
             $this->fileLoader->loadCss($files['css'] ?? '');
@@ -55,6 +67,6 @@ class ComponentLoader
             return '';
         }
         
-        return $this->fileLoader->loadPhp($files['php'] ?? '', $this->component);
+        return $this->fileLoader->loadPhp($files['php'] ?? '', $this->component, $this->component->shouldRenderDataAttrs());
     }
 }
