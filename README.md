@@ -1,3 +1,7 @@
-# Magic Dashboard
+# cheerios-toolkit
+my own little website starter toolkit i use for my projects :)
 
-General utility web dashboard, forked from and based on cheerios4316/cheerios-toolkit
+## Run
+Run `composer install`, `npm install` and `npm run build`
+`npm run build` builds the CSS for the project.
+Tailwind init file is located in `/tailwind/init.css`
