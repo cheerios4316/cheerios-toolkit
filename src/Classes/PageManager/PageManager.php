@@ -83,7 +83,9 @@ class PageManager
         $html = $this->redirectManager->autoloadControllers()->getPageHtml($_SERVER['REQUEST_URI']);
 
         $this->renderHead();
+        echo "<body>";
         echo $html;
+        echo "</body>";
     }
 
     private function getDependenciesWithDefault(): array

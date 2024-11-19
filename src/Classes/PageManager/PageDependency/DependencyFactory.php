@@ -14,22 +14,13 @@ class DependencyFactory
 
         switch($type) {
             case DependencyConstants::$SCRIPT:
-                $dep = $container->create(ScriptDependency::class);
-                if(!empty($arg)) {
-                    $dep->setSrc($arg);
-                }
+                $dep = $this->createJsDependency($arg);
                 break;
             case DependencyConstants::$ICON:
-                $dep = $container->create(IconDependency::class);
-                if(!empty($arg)) {
-                    $dep->setHref($arg);
-                }
+                $dep = $this->createIconDependency($arg);
                 break;
             case DependencyConstants::$STYLESHEET:
-                $dep = $container->create(CssDependency::class);
-                if(!empty($arg)) {
-                    $dep->setHref($arg);
-                }
+                $dep = $this->createCssDependency($arg);
                 break;
         }
 
@@ -50,6 +41,17 @@ class DependencyFactory
     public function createCssDependency(string $arg = ''): CssDependency
     {
         $dep = Container::getInstance()->create(CssDependency::class);
+
+        if(!empty($arg)) {
+            $dep->setHref($arg);
+        }
+
+        return $dep;
+    }
+
+    public function createIconDependency(string $arg = ''): IconDependency
+    {
+        $dep = Container::getInstance()->create(IconDependency::class);
 
         if(!empty($arg)) {
             $dep->setHref($arg);
