@@ -38,13 +38,21 @@ class BaseController
     public function renderPage(): string
     {
         $page = $this->generatePage();
+
         if(!$page) {
             $this->render404();
         } else {
             return $page->content(true);
         }
+
+        return '';
     }
 
+    /**
+     * I will NEVER implement this :D
+     * 
+     * @return void
+     */
     protected function render404()
     {
         //(new Page404Component())->render();
