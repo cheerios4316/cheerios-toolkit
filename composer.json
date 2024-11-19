@@ -22,6 +22,7 @@
         "fortawesome/font-awesome": "*",
         "filp/whoops": "^2.15",
         "components/jquery": "^3.7",
-        "mobiledetect/mobiledetectlib": "^4.8"
+        "mobiledetect/mobiledetectlib": "^4.8",
+        "components/jqueryui": "^1.12"
     }
 }

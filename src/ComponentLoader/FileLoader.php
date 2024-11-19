@@ -2,13 +2,23 @@
 
 namespace Src\ComponentLoader;
 
+use Src\Classes\PageManager\PageDependency\DependencyFactory;
+use Src\Classes\PageManager\PageManager;
 use Src\Components\Component;
+use Src\Container\Container;
 
 class FileLoader
 {
     protected static $loaded_css = [];
 
     protected static $loaded_js = [];
+
+    protected DependencyFactory $dependencyFactory;
+
+    public function __construct(DependencyFactory $dependencyFactory)
+    {
+        $this->dependencyFactory = $dependencyFactory;
+    }
 
 
     public function loadPhp(string $file, Component $component): string
@@ -21,7 +31,11 @@ class FileLoader
 
         $this->includeFileWithBoundThis($file, $component);
 
-        return ob_get_clean();
+        $html = ob_get_clean();
+
+        $dataAttrs = $component->renderDataAttrs();
+
+        return preg_replace('/(<div[^>]*)(>)/', '$1 ' . $dataAttrs . '$2', $html, 1);
     }
 
     protected function includeFileWithBoundThis(string $file, Component $component): void
@@ -42,7 +56,8 @@ class FileLoader
         }
 
         self::$loaded_js[] = $file;
-        echo '<script type="application/javascript" src="/' . htmlspecialchars($file) . '"></script>';
+        $dependency = $this->dependencyFactory->createJsDependency('/' . htmlspecialchars($file));
+        PageManager::addDependency($dependency);
     }
 
     public function loadCss(string $file): void
@@ -52,7 +67,8 @@ class FileLoader
         }
 
         self::$loaded_css[] = $file;
-        echo '<link rel="stylesheet" type="text/css" href="/' . htmlspecialchars($file) . '">';
+        $dependency = $this->dependencyFactory->createCssDependency('/' . htmlspecialchars($file));
+        PageManager::addDependency($dependency);
     }
 
     protected function checkAssets(string $file, array $loaded = []): bool

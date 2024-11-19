@@ -4,24 +4,30 @@ namespace Src\Classes\PageManager;
 
 use Src\Classes\PageManager\PageDependency\DependencyFactory;
 use Src\Classes\PageManager\PageDependency\DependencyInterface;
+use Src\Classes\RedirectManager;
 
 class PageManager
 {
 
     protected DependencyFactory $dependencyFactory;
 
-    /** @var DependencyInterface[] */
-    protected array $dependencies = [];
+    protected RedirectManager $redirectManager;
 
-    public function __construct(DependencyFactory $dependencyFactory)
-    {
-        $this->dependencyFactory = $dependencyFactory;
-    }
+    /** @var DependencyInterface[] */
+    protected static array $dependencies = [];
 
     private array $defaultDependencies = [
         [
             "type" => "script",
             "link" => "/vendor/components/jquery/jquery.min.js"
+        ],
+        [
+            "type" => "script",
+            "link" => "/vendor/components/jqueryui/jquery-ui.min.js"
+        ],
+        [
+            "type" => "stylesheet",
+            "link" => "/vendor/components/jqueryui/themes/base/jquery-ui.min.css"
         ],
         [
             "type" => "stylesheet",
@@ -34,8 +40,18 @@ class PageManager
         [
             "type" => "icon",
             "link" => "/public/assets/favicon.ico"
-        ]
+        ],
+        [
+            "type" => "script",
+            "link" => "/src/Application.js"
+        ],
     ];
+
+    public function __construct(DependencyFactory $dependencyFactory, RedirectManager $redirectManager)
+    {
+        $this->redirectManager = $redirectManager;
+        $this->dependencyFactory = $dependencyFactory;
+    }
 
     public function getContentDependencies(): string
     {
@@ -62,6 +78,14 @@ class PageManager
         return $this;
     }
 
+    public function renderPage(): void
+    {
+        $html = $this->redirectManager->autoloadControllers()->getPage($_SERVER['REQUEST_URI']);
+
+        $this->renderHead();
+        echo $html;
+    }
+
     private function getDependenciesWithDefault(): array
     {
         $defaults = [];
@@ -69,12 +93,11 @@ class PageManager
             $defaults[] = $this->dependencyFactory->createByType($dep['type'], $dep['link']);
         }
 
-        return array_merge($defaults, $this->dependencies);
+        return array_merge($defaults, self::$dependencies);
     }
 
-    public function addDependencies(DependencyInterface $dependencies): self
-     {
-        $this->dependencies[] = $dependencies;
-        return $this;
+    public static function addDependency(DependencyInterface $dependency): void
+    {
+        self::$dependencies[] = $dependency;
     }
 }

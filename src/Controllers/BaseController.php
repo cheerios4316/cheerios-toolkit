@@ -35,13 +35,13 @@ class BaseController
         }
     }
 
-    public function renderPage()
+    public function renderPage(): string
     {
         $page = $this->generatePage();
         if(!$page) {
             $this->render404();
         } else {
-            $page->render();
+            return $page->content(true);
         }
     }
 

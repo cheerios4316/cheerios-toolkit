@@ -19,7 +19,9 @@ class Component
 
     protected $dataAttrs = [];
 
-    protected ?ComponentLoader $componentLoader = null;
+    protected string $title = '';
+
+    protected bool $disabled = false;
 
     protected function applySettings()
     {
@@ -28,8 +30,8 @@ class Component
 
     public final function hydrate(array $data = []): self
     {
-        foreach($data as $key => $val) {
-            if(property_exists($this, $key)) {
+        foreach ($data as $key => $val) {
+            if (property_exists($this, $key)) {
                 $this->$key = $val;
             }
         }
@@ -45,30 +47,10 @@ class Component
     public function content(bool $includeAssets = false): string
     {
         $this->applySettings();
-        
-        return $this->getComponentLoader()->getHtml($includeAssets);
-    }
 
-    public function parentContent(bool $includeAssets = true): string
-    {
-        $parentClass = get_parent_class($this);;
+        $loader = Container::getInstance()->create(ComponentLoader::class);
 
-        if(!is_subclass_of($parentClass, Component::class)) {
-            return '';
-        }
-
-        $parentInstance = Container::getInstance()->create($parentClass);
-
-        return $parentInstance->content();
-    }
-
-    protected function getComponentLoader(): ComponentLoader
-    {
-        if(!$this->componentLoader) {
-            $this->componentLoader = Container::getInstance()->create(ComponentLoader::class)->setComponent($this);
-        }
-
-        return $this->componentLoader;
+        return $loader->setComponent($this, $this->disabled)->getHtml($includeAssets);
     }
 
     public final function getComponentPath(): string
@@ -92,6 +74,17 @@ class Component
         return $this;
     }
 
+    public function getTitle(): string
+    {
+        return $this->title;
+    }
+
+    public function setTitle(string $title): self
+    {
+        $this->title = $title;
+        return $this;
+    }
+
     public function addItem($item): self
     {
         $this->items[] = $item;
@@ -107,12 +100,20 @@ class Component
     public function renderDataAttrs(): string
     {
         $res = '';
+        $this->dataAttrs = array_merge([
+            'component' => $this->getClassName()
+        ], $this->dataAttrs);
         foreach ($this->dataAttrs as $key => $val) {
             $escaped = htmlspecialchars($val);
             $res .= "data-$key=\"$escaped\" ";
         }
 
         return $res;
+    }
+
+    protected function getClassName(): string
+    {
+        return basename(str_replace('\\', '/', get_class($this)));
     }
 
     public function setDataAttrs(array $dataAttrs): self
@@ -124,6 +125,12 @@ class Component
     public function addDataAttr(string $key, string $value): self
     {
         $this->dataAttrs[$key] = $value;
+        return $this;
+    }
+
+    public function disable(): self
+    {
+        $this->disabled = true;
         return $this;
     }
 }

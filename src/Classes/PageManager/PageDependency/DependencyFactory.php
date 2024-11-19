@@ -36,4 +36,26 @@ class DependencyFactory
         return $dep;
     }
 
+    public function createJsDependency(string $arg = ''): ScriptDependency
+    {
+        $dep = Container::getInstance()->create(ScriptDependency::class);
+
+        if(!empty($arg)) {
+            $dep->setSrc($arg);
+        }
+
+        return $dep;
+    }
+
+    public function createCssDependency(string $arg = ''): CssDependency
+    {
+        $dep = Container::getInstance()->create(CssDependency::class);
+
+        if(!empty($arg)) {
+            $dep->setHref($arg);
+        }
+
+        return $dep;
+    }
+
 }

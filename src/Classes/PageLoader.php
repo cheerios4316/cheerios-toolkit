@@ -6,17 +6,21 @@ use Src\Controllers\Page404Controller;
 
 class PageLoader
 {
-    public function loadPage(array $uriData, array $paths = [])
+    public function loadPage(array $uriData, array $paths = []): string
     {
         $container = Container::getInstance();
 
         $currentPath = trim($uriData['path'], '/');
 
+        $html = '';
+
         if (key_exists($currentPath, $paths)) {
             $controllerClass = $paths[$currentPath];
-            ($container->create($controllerClass))->renderPage();
+            $html = ($container->create($controllerClass))->renderPage();
         } else {
-            ($container->create(Page404Controller::class))->renderPage();
+            $html = ($container->create(Page404Controller::class))->renderPage();
         }
+
+        return $html;
     }
 }

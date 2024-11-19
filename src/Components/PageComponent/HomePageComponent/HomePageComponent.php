@@ -2,7 +2,6 @@
 
 namespace Src\Components\PageComponent\HomePageComponent;
 use Src\Components\PageComponent\PageComponent;
-use Src\Container\Container;
 
 class HomePageComponent extends PageComponent
 {
@@ -10,7 +9,6 @@ class HomePageComponent extends PageComponent
     protected $area = 'PageComponent/HomePageComponent';
 
     protected string $text = 'Sample Text';
-
     public function getText(): string
     {
         return $this->text;

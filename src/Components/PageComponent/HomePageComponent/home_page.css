@@ -1,0 +1,9 @@
+body
+{
+    background-color: #111;
+}
+
+.home-page-component
+{
+    min-height: 100vh;
+}

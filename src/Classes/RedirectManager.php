@@ -57,7 +57,7 @@ class RedirectManager
         }
     }
 
-    public function loadPage(string $uri)
+    public function getPage(string $uri): string
     {
         $uriData = parse_url($uri);
 
@@ -73,6 +73,6 @@ class RedirectManager
             $this->redirect($uriData['path'] . '/' . $query);
         }
 
-        $this->pageLoader->loadPage($uriData, self::$pathToController);
+        return $this->pageLoader->loadPage($uriData, self::$pathToController);
     }
 }

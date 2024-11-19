@@ -3,6 +3,7 @@
 namespace Src\ComponentLoader;
 
 use Src\Components\Component;
+use Src\Components\SearchbarComponent\SearchbarComponent;
 
 class ComponentLoader
 {
@@ -14,14 +15,17 @@ class ComponentLoader
 
     protected FileLoader $fileLoader;
 
+    protected bool $disabled = false;
+
     public function __construct(FileLoader $fileLoader)
     {
         $this->fileLoader = $fileLoader;
     }
 
-    public function setComponent(Component $component) : self
+    public function setComponent(Component $component, bool $disabled = false) : self
     {
         $this->component = $component;
+        $this->disabled = $disabled;
         return $this;
     }
 
@@ -47,6 +51,10 @@ class ComponentLoader
             $this->fileLoader->loadCss($files['css'] ?? '');
         }
 
+        if($this->disabled) {
+            return '';
+        }
+        
         return $this->fileLoader->loadPhp($files['php'] ?? '', $this->component);
     }
 }

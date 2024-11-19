@@ -27,6 +27,6 @@ $container->create(WhoopsStackTrace::class)->init();
 $redirectManager = $container->create(RedirectManager::class);
 
 // Manage dependencies like favicon, JS and CSS in the PageManager
-$pageManager = $container->create(class: PageManager::class)->renderHead();
+$pageManager = $container->create(class: PageManager::class);
 
-$redirectManager->autoloadControllers()->loadPage($_SERVER['REQUEST_URI']);
+$pageManager->renderPage();

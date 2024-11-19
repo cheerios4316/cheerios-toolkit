@@ -1,35 +1,10 @@
-class ClassNameComponent {
-    constructor($element) {
-        this.$element = $element;
-        this.setData();
-        this.setDependencies();
-        this.init();
-    }
+window.ClassNameComponent = class ClassNameComponent {
 
-    init() {
-        this.bindEvents();
-        this.$element.data('instance', this)
-    }
-
-    setDependencies() {
-    }
-
+    // Override to set instance data
     setData() {
     }
 
+    // Override to set instance events
     bindEvents() {
     }
 }
-
-function initializePostComponents() {
-    $('.component_name').each(function() {
-        var $element = $(this);
-        if (!$element.data('initialized')) {
-            new ClassNameComponent($element);
-            $element.data('initialized', true); // Mark as initialized
-        }
-    });
-}
-
-// Initialize components on DOMContentLoaded
-$(document).ready(initializePostComponents);

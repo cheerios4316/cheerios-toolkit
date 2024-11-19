@@ -17,10 +17,12 @@ class WhoopsStackTrace implements StackTraceInterface
     {
         $container = Container::getInstance();
 
-        if (in_array($_SERVER['HTTP_HOST'], self::$allowedHosts)) {
-            $whoops = $container->create(Run::class);
-            $whoops->pushHandler($container->create(PrettyPageHandler::class));
-            $whoops->register();
+        if (!in_array($_SERVER['HTTP_HOST'], self::$allowedHosts)) {
+            return;
         }
+
+        $whoops = $container->create(Run::class);
+        $whoops->pushHandler($container->create(PrettyPageHandler::class));
+        $whoops->register();
     }
 }
