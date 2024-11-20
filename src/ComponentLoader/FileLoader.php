@@ -24,7 +24,7 @@ class FileLoader
      * Binds the content of a Component's PHP file to the Component's $this context
      * 
      * @param string $file
-     * @param \Src\Components\Component $component
+     * @param Component $component
      * @return void
      */
     protected function includeFileWithBoundThis(string $file, Component $component): void
@@ -101,7 +101,7 @@ class FileLoader
     }
 
     /**
-     * Checks if a file exists and it's already enqueued in the assets manager
+     * Checks if a file exists, and it's already enqueued in the assets manager
      * 
      * @param string $file
      * @param array $loaded

@@ -3,8 +3,8 @@
 namespace Src\Components;
 
 use Src\ComponentLoader\ComponentLoader;
-use Src\Components\StyleProps;
 use Src\Container\Container;
+use Src\Exceptions\ContainerException;
 
 class Component
 {
@@ -18,6 +18,8 @@ class Component
     protected array $dataAttrs = [];
 
     protected string $title = '';
+
+    protected ?ComponentLoader $componentLoader = null;
 
     /**
      * Defines whether the component should be disabled or not
@@ -48,7 +50,7 @@ class Component
      * Simple hydrator. Pass [keys => values] into.
      * 
      * @param array $data
-     * @return \Src\Components\Component
+     * @return Component
      */
     public final function hydrate(array $data = []): self
     {
@@ -81,8 +83,9 @@ class Component
 
     /**
      * Renders the Component into the page
-     * 
+     *
      * @return void
+     * @throws ContainerException
      */
     public function render(): void
     {
@@ -91,17 +94,36 @@ class Component
 
     /**
      * Returns the HTML of the Component
-     * 
+     *
      * @param bool $includeAssets
      * @return string
+     * @throws ContainerException
      */
     public function content(bool $includeAssets = false): string
     {
         $this->applySettings();
 
-        $loader = Container::getInstance()->create(ComponentLoader::class);
+        return $this->getComponentLoader()->getHtml($includeAssets);
+    }
 
-        return $loader->setComponent($this, $this->disabled)->getHtml($includeAssets);
+    /**
+     * Returns the Component's parent HTML content
+     *
+     * @param bool $includeAssets
+     * @return string
+     * @throws ContainerException
+     */
+    public function parentContent(bool $includeAssets = true): string
+    {
+        $parentClass = get_parent_class($this);;
+
+        if(!is_subclass_of($parentClass, Component::class)) {
+            return '';
+        }
+
+        $parentInstance = Container::getInstance()->create($parentClass);
+
+        return $parentInstance->content(true);
     }
 
     /**
@@ -112,6 +134,18 @@ class Component
     public final function getComponentPath(): string
     {
         return $this->scope . '/' . $this->area;
+    }
+
+    /**
+     * @throws ContainerException
+     */
+    protected function getComponentLoader(): ComponentLoader
+    {
+        if (!$this->componentLoader) {
+            $this->componentLoader = Container::getInstance()->create(ComponentLoader::class)->setComponent($this);
+        }
+
+        return $this->componentLoader;
     }
 
     /**
@@ -138,7 +172,7 @@ class Component
      * Setter for $items
      * 
      * @param array $arr
-     * @return \Src\Components\Component
+     * @return Component
      */
     public function setItems(array $arr): self
     {
@@ -160,7 +194,7 @@ class Component
      * Setter for $title
      * 
      * @param string $title
-     * @return \Src\Components\Component
+     * @return Component
      */
     public function setTitle(string $title): self
     {
@@ -174,7 +208,7 @@ class Component
      * @param mixed $item
      * @return Component
      */
-    public function addItem($item): self
+    public function addItem(mixed $item): self
     {
         $this->items[] = $item;
         return $this;
@@ -184,7 +218,7 @@ class Component
      * Adds N items to $items
      * 
      * @param array $items
-     * @return \Src\Components\Component
+     * @return Component
      */
     public function addItems(...$items): self
     {
@@ -206,7 +240,7 @@ class Component
      * Setter for $dataAttrs
      * 
      * @param array $dataAttrs
-     * @return \Src\Components\Component
+     * @return Component
      */
     public function setDataAttrs(array $dataAttrs): self
     {
@@ -219,7 +253,7 @@ class Component
      * 
      * @param string $key
      * @param string $value
-     * @return \Src\Components\Component
+     * @return Component
      */
     public function addDataAttr(string $key, string $value): self
     {
@@ -230,7 +264,7 @@ class Component
     /**
      * Disables the component's view
      * 
-     * @return \Src\Components\Component
+     * @return Component
      */
     public function disable(): self
     {

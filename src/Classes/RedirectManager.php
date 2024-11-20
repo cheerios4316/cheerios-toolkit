@@ -3,6 +3,8 @@
 namespace Src\Classes;
 use ReflectionClass;
 use Src\Controllers\ControllerInterface;
+use Src\Controllers\HomeController;
+use Src\Routing\RoutingInterface;
 
 class RedirectManager
 {
@@ -16,6 +18,8 @@ class RedirectManager
     {
         $this->pageLoader = $pageLoader;
         $this->controllerLoader = $controllerLoader;
+
+        $this->registerControllers();
     }
 
     public function redirect($destination)
@@ -24,22 +28,29 @@ class RedirectManager
         exit();
     }
 
-    public function autoloadControllers(): self
+    /**
+     * Registers routes passed by a RoutingInterface object
+     *
+     * @param RoutingInterface $routing
+     * @return $this
+     */
+    public function addRouting(RoutingInterface $routing): self
     {
-        $implementations = $this->controllerLoader->getControllers();
+        foreach($routing->getRoutes() as $path => $controller) {
+            $this->registerController($path, $controller);
+        }
 
-        $this->setControllers($implementations);
         return $this;
     }
 
-    public function setControllers(array $controllers)
-    {
-        foreach ($controllers as $name => $controller) {
-            $this->addController($controller::getUrl(), $controller);
-        }
-    }
-
-    private function addController($path, $controller): self
+    /**
+     * Associates a controller class to a given /path/to/page/
+     *
+     * @param string $path
+     * @param string $controller
+     * @return $this
+     */
+    protected function registerController(string $path, string $controller): self
     {
         if (!empty($path)) {
             self::$pathToController[$path] = $controller;
@@ -47,7 +58,14 @@ class RedirectManager
         return $this;
     }
 
-    protected function handleSpecialPaths(string $path)
+    /**
+     * Handles special redirect rules
+     *
+     * @param string $path
+     * @return void
+     * @deprecated will be removed once a divine intellect routing is implemented
+     */
+    protected function handleSpecialPaths(string $path): void
     {
         switch($path)
         {

@@ -2,6 +2,7 @@
 
 namespace Src\Container;
 use ReflectionClass;
+use ReflectionException;
 use Src\Exceptions\ContainerException;
 
 class Container
@@ -19,12 +20,13 @@ class Container
 
     /**
      * Creates a new instance of a class. If true, the second argument skips storing in cache
-     * 
-     * @param string $class
-     * @throws ContainerException
-     * @return object|null
+     *
+     * @template T
+     * @param class-string<T> $class
+     * @param bool $skipCache
+     * @return ?T
      */
-    public function create(string $class, bool $skipCache = false): object|null
+    public function create(string $class, bool $skipCache = false): ?object
     {
         $reflection = new ReflectionClass($class);
 
