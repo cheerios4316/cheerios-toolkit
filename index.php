@@ -14,7 +14,7 @@ $initConfig = $container->create(IndexConfiguration::class);
 $initConfig->init();
 
 // Manage dependencies like favicon, JS and CSS in the PageManager
-$pageManager = $container->create(class: PageManager::class);
+$pageManager = $container->create(PageManager::class);
 $pageManager->renderPage();
 
 /**
