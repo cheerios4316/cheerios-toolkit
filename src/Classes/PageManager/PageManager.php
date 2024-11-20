@@ -80,7 +80,7 @@ class PageManager
 
     public function renderPage(): void
     {
-        $html = $this->redirectManager->getPageHtml($_SERVER['REQUEST_URI']);
+        $html = $this->redirectManager->getController($_SERVER['REQUEST_URI'])->renderPage();
 
         $this->renderHead();
 

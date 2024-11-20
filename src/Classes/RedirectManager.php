@@ -24,7 +24,7 @@ class RedirectManager
     }
 
     /**
-     * Registers routes passed by a RoutingInterface object
+     * Registers routes
      *
      * @param RoutingInterface $routing
      * @return $this
@@ -70,7 +70,7 @@ class RedirectManager
         }
     }
 
-    public function getPageHtml(string $uri): string
+    public function getController(string $uri): ControllerInterface
     {
         $uriData = parse_url($uri);
 
@@ -86,6 +86,6 @@ class RedirectManager
             $this->redirect($uriData['path'] . '/' . $query);
         }
 
-        return $this->pageLoader->loadPage($uriData, self::$pathToController);
+        return $this->pageLoader->getPageController($uriData, self::$pathToController);
     }
 }
