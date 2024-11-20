@@ -49,6 +49,11 @@ class IndexConfiguration
         return $this;
     }
 
+    /**
+     * Registers default init actions
+     *
+     * @return void
+     */
     protected function registerActions(): void
     {
         $container = Container::getInstance();
