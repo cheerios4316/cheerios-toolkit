@@ -8,7 +8,7 @@ use Whoops\Run;
 
 class WhoopsStackTrace implements StackTraceInterface
 {
-    protected static $allowedHosts = [
+    protected static array $allowedHosts = [
         'localhost',
         '127.0.0.1'
     ];

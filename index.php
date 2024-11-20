@@ -20,7 +20,7 @@ $pageManager->renderPage();
 /**
  * HOW TO EDIT ROUTING
  *
- * 1. Edit this array, add or remove routing areas:
+ * 1. Edit this array to add or remove routing areas:
  *    \Src\Classes\IndexConfiguration\RoutingInit::$routings
  *
  * 2. Implement/modify the getRoutes() method to bind controllers to routes

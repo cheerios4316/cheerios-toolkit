@@ -28,16 +28,20 @@ class Container
      */
     public function create(string $class, bool $skipCache = false): ?object
     {
-        $reflection = new ReflectionClass($class);
+        try {
+            $reflection = new ReflectionClass($class);
 
-        $cachedHash = md5($class);
+            $cachedHash = md5($class);
 
-        $deps = $this->dependencyResolver->resolve($reflection);
+            $deps = $this->dependencyResolver->resolve($reflection);
 
-        $instance = $reflection->newInstanceArgs($deps);
-        !$skipCache && self::$cached[$cachedHash] = $instance;
-        
-        return $instance;
+            $instance = $reflection->newInstanceArgs($deps);
+            !$skipCache && self::$cached[$cachedHash] = $instance;
+
+            return $instance;
+        } catch (\Exception $e) {
+            return null;
+        }
     }
 
     public function getCached(string $class): object|null

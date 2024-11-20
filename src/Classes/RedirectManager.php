@@ -12,14 +12,9 @@ class RedirectManager
 
     protected PageLoader $pageLoader;
 
-    protected ControllerLoader $controllerLoader;
-
-    public function __construct(PageLoader $pageLoader, ControllerLoader $controllerLoader)
+    public function __construct(PageLoader $pageLoader)
     {
         $this->pageLoader = $pageLoader;
-        $this->controllerLoader = $controllerLoader;
-
-        $this->registerControllers();
     }
 
     public function redirect($destination)
