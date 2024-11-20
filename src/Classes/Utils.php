@@ -20,15 +20,23 @@ class Utils
         }
     }
 
+    /**
+     * @param string $interfaceName
+     * @return array
+     */
     public function getImplementations(string $interfaceName): array
     {
-        $implementations = [];
-        foreach (get_declared_classes() as $class) {
-            $reflect = new \ReflectionClass($class);
-            if ($reflect->implementsInterface($interfaceName)) {
-                $implementations[] = $class;
+        try {
+            $implementations = [];
+            foreach (get_declared_classes() as $class) {
+                $reflect = new \ReflectionClass($class);
+                if ($reflect->implementsInterface($interfaceName)) {
+                    $implementations[] = $class;
+                }
             }
+            return $implementations;
+        } catch (\Exception $e) {
+            return [];
         }
-        return $implementations;
     }
 }
