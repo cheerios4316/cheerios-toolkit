@@ -1,6 +1,6 @@
 <?php
+
 namespace Src\Classes;
-use Exception;
 
 class JsonReader {
     private string $path = '';
