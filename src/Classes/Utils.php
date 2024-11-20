@@ -2,27 +2,22 @@
 
 namespace Src\Classes;
 use Detection\MobileDetect;
+use Src\Container\Container;
 
 class Utils
 {
-    protected static ?MobileDetect $mobileDetect = null;
-
     /**
      * @return bool
      */
     public static function isMobile(): bool
     {
-        $detect = self::getMobileDetect();
+        try {
+            $detect = Container::getInstance()->create(MobileDetect::class);
 
-        return $detect->isMobile() && !$detect->isTablet();
-    }
-
-    protected static function getMobileDetect() {
-        if(!self::$mobileDetect) {
-            self::$mobileDetect = new MobileDetect();
+            return $detect->isMobile() && !$detect->isTablet();
+        } catch (\Exception $e) {
+            return false;
         }
-
-        return self::$mobileDetect;
     }
 
     public function getImplementations(string $interfaceName): array
