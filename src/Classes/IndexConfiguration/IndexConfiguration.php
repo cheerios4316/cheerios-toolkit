@@ -22,11 +22,31 @@ class IndexConfiguration
         $this->registerActions();
     }
 
-    public function init(): void
+    /**
+     * Launches all the init actions
+     *
+     * @return self
+     */
+    public function init(): self
     {
         foreach($this->initActions as $action) {
             $action->exec();
         }
+
+        return $this;
+    }
+
+    /**
+     * Adds another action to the list
+     *
+     * @param InitActionInterface $action
+     * @return $this
+     */
+    public function addAction(InitActionInterface $action): self
+    {
+        $this->initActions[] = $action;
+
+        return $this;
     }
 
     protected function registerActions(): void
