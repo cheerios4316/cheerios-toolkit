@@ -10,7 +10,7 @@ class AjaxActionLoader
 {
     protected static array $implementations = [];
     
-    public function getEndpoints()
+    public function getEndpoints(): array
     {
         if(empty(self::$implementations)) {
             self::$implementations = $this->fetchImplementations();
@@ -21,21 +21,25 @@ class AjaxActionLoader
 
     protected function fetchImplementations(): array
     {
-        $endpointsPath = $_SERVER['DOCUMENT_ROOT'] . '/src/Ajax/AjaxActions';
-        foreach (glob($endpointsPath . '/*.php') as $file) {
-            require_once $file;
-        }
-
-        $implementations = [];
-
-        foreach (get_declared_classes() as $class) {
-            $reflect = new ReflectionClass($class);
-            if ($reflect->implementsInterface(AjaxActionInterface::class)) {
-                $implementations[$this->getEndpointName($class)] = $class;
+        try {
+            $endpointsPath = $_SERVER['DOCUMENT_ROOT'] . '/src/Ajax/AjaxActions';
+            foreach (glob($endpointsPath . '/*.php') as $file) {
+                require_once $file;
             }
-        }
 
-        return $implementations;
+            $implementations = [];
+
+            foreach (get_declared_classes() as $class) {
+                $reflect = new ReflectionClass($class);
+                if ($reflect->implementsInterface(AjaxActionInterface::class)) {
+                    $implementations[$this->getEndpointName($class)] = $class;
+                }
+            }
+
+            return $implementations;
+        } catch (\Exception $e) {
+            return [];
+        }
     }
 
     protected function getEndpointName(string $class): string

@@ -83,6 +83,7 @@ class PageManager
         $html = $this->redirectManager->getPageHtml($_SERVER['REQUEST_URI']);
 
         $this->renderHead();
+
         echo "<body>";
         echo $html;
         echo "</body>";

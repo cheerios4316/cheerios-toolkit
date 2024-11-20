@@ -44,7 +44,14 @@ class Container
         }
     }
 
-    public function getCached(string $class): object|null
+    /**
+     * Returns the latest cached instance of a class
+     *
+     * @template T
+     * @param class-string<T> $class
+     * @return ?T
+     */
+    public function getCached(string $class): ?object
     {
         $cachedHash = md5($class);
 
@@ -55,6 +62,11 @@ class Container
         return self::$cached[$cachedHash];
     }
 
+    /**
+     * Returns the singleton instance of the container
+     *
+     * @return self
+     */
     public static function getInstance(): self
     {
         if(!self::$instance) {
