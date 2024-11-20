@@ -8,7 +8,7 @@ class DotenvInit implements InitActionInterface
 {
     public function exec(): void
     {
-        $dotenv = Dotenv::createImmutable(__DIR__);
+        $dotenv = Dotenv::createImmutable($_SERVER['DOCUMENT_ROOT']);
         $dotenv->load();
     }
 }
