@@ -56,9 +56,9 @@ class StringUtils
         $totalMinutes = ($hours1 * 60 + $minutes1) + ($hours2 * 60 + $minutes2);
         $hours = intdiv($totalMinutes, 60);
         $minutes = $totalMinutes % 60;
-    
+
         return sprintf('%02d:%02d', $hours, $minutes);
-    }   
+    }
 
     public static function hashPassword(string $password = ''): string
     {
@@ -68,8 +68,29 @@ class StringUtils
         );
     }
 
-    public static function addHostToUrl(string $url, bool $addProtocol = false): string {
-        if(!self::startsWith($url, '/')) {
+    public static function toString(string $input): string
+    {
+        return $input;
+    }
+
+    public static function toInt(string $input): int
+    {
+        return intval($input);
+    }
+
+    public static function toFloat(string $input): float
+    {
+        return floatval($input);
+    }
+
+    public static function jsonToArray(string $input): array
+    {
+        return json_decode($input);
+    }
+
+    public static function addHostToUrl(string $url, bool $addProtocol = false): string
+    {
+        if (!self::startsWith($url, '/')) {
             $url = "/$url";
         }
 
