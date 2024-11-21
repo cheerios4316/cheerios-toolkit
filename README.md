@@ -48,3 +48,6 @@ e.g. MyFantasticComponent's view will look like this:
     <!-- some content -->
 </div>
 ```
+
+## Contributing
+Don't ;D
