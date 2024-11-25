@@ -17,12 +17,12 @@ class StringUtils
 
     public static function stripChars(string $string, string|array $chars): string
     {
-        if(!is_array($chars)) {
+        if (!is_array($chars)) {
             $chars = [$chars];
         }
 
-        foreach($chars as $char) {
-            $string = trim($string, $char);            
+        foreach ($chars as $char) {
+            $string = trim($string, $char);
         }
 
         return $string;
@@ -52,7 +52,7 @@ class StringUtils
     {
         list($hours1, $minutes1) = explode(':', $time1);
         list($hours2, $minutes2) = explode(':', $time2);
-    
+
         $totalMinutes = ($hours1 * 60 + $minutes1) + ($hours2 * 60 + $minutes2);
         $hours = intdiv($totalMinutes, 60);
         $minutes = $totalMinutes % 60;
@@ -100,12 +100,19 @@ class StringUtils
         return $protocol . $currentHost . $url;
     }
 
-    public static function getCurrentProtocol(): string {
+    public static function getCurrentProtocol(): string
+    {
         $https = $_SERVER['HTTPS'] ?? '';
-        if('on' == $https) {
+        if ('on' == $https) {
             return 'https';
         }
 
         return 'http';
+    }
+
+    public static function getUrlPattern(string $path): string
+    {
+        $pattern = preg_replace('/\{(\w+)\}/', '(?P<\1>[^/]+)', $path);
+        return '#^' . trim($pattern, '/') . '/?$#';
     }
 }

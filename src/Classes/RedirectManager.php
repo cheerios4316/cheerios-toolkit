@@ -1,14 +1,15 @@
 <?php
 
 namespace Src\Classes;
-use ReflectionClass;
 use Src\Controllers\ControllerInterface;
-use Src\Controllers\HomeController;
+use Src\Routing\Redirection\RedirectionInterface;
 use Src\Routing\RoutingInterface;
 
 class RedirectManager
 {
     protected static array $pathToController = [];
+
+    protected static array $redirections = [];
 
     protected PageLoader $pageLoader;
 
@@ -17,6 +18,12 @@ class RedirectManager
         $this->pageLoader = $pageLoader;
     }
 
+    /**
+     * Redirects to path
+     * 
+     * @param mixed $destination
+     * @return never
+     */
     public function redirect($destination)
     {
         header('Location: ' . $destination);
@@ -39,6 +46,21 @@ class RedirectManager
     }
 
     /**
+     * Registers a redirection
+     * 
+     * @param \Src\Routing\Redirection\RedirectionInterface $redirection
+     * @return \Src\Classes\RedirectManager
+     */
+    public function addRedirection(RedirectionInterface $redirection): self
+    {
+        foreach($redirection->getRedirections() as $path => $destination) {
+            $this->registerRedirect($path, $destination);
+        }
+
+        return $this;
+    }
+
+    /**
      * Associates a controller class to a given /path/to/page/
      *
      * @param string $path
@@ -54,27 +76,41 @@ class RedirectManager
     }
 
     /**
+     * Forces redirect from given paths to destinations
+     * 
+     * @param string $path
+     * @param string $destination
+     * @return \Src\Classes\RedirectManager
+     */
+    protected function registerRedirect(string $path, string $destination): self
+    {
+        if (!empty($path)) {
+            self::$redirections[$path] = $destination;
+        }
+
+        return $this;
+    }
+
+    /**
      * Handles special redirect rules
      *
      * @param string $path
      * @return void
-     * @deprecated will be removed once a divine intellect routing is implemented
      */
-    protected function handleSpecialPaths(string $path): void
+    protected function handleRedirect(string $path): void
     {
-        switch($path)
-        {
-            case '/':
-                $this->redirect('/home');
-                break;
+        if(!array_key_exists($path, self::$redirections)) {
+            return;
         }
+
+        $this->redirect(self::$redirections[$path]);
     }
 
     public function getController(string $uri): ControllerInterface
     {
         $uriData = parse_url($uri);
 
-        $this->handleSpecialPaths($uriData['path']);
+        $this->handleRedirect($uriData['path']);
 
         if (!StringUtils::endsWith($uriData['path'], '/')) {
             $query = '';

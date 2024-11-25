@@ -14,7 +14,8 @@ class IndexConfiguration
         ErrorsInit::class,
         StackTraceInit::class,
         DotenvInit::class,
-        RoutingInit::class
+        RoutingInit::class,
+        RedirectionInit::class
     ];
 
     public function __construct()
