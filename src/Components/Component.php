@@ -115,9 +115,10 @@ class Component
      */
     public function parentContent(bool $includeAssets = true): string
     {
-        $parentClass = get_parent_class($this);;
+        $parentClass = get_parent_class($this);
+        ;
 
-        if(!is_subclass_of($parentClass, Component::class)) {
+        if (!is_subclass_of($parentClass, Component::class)) {
             return '';
         }
 
@@ -133,7 +134,29 @@ class Component
      */
     public final function getComponentPath(): string
     {
-        return $this->scope . '/' . $this->area;
+        return str_replace('//', '/', $this->scope . '/' . $this->getArea());
+    }
+
+    /**
+     * Returns the component's path Area
+     * 
+     * @return string
+     */
+    private function getArea(): string
+    {
+        if (empty($this->area)) {
+            $namespace = get_class($this);
+            $base = 'Src\\Components';
+
+            $namespace = str_replace($base, '', $namespace);
+
+            $path = str_replace('\\', '/', $namespace);
+            $basename = basename(get_class($this));
+
+            $this->area = substr($path, 0, -strlen($basename) - 1);
+        }
+
+        return $this->area;
     }
 
     /**

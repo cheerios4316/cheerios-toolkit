@@ -12,7 +12,6 @@ use Src\Container\Container;
 class PageComponent extends Component
 {
     protected $name = 'page';
-    protected $area = 'PageComponent';
 
     protected HeaderComponent $headerComponent;
     protected SessionManager $sessionManager;
