@@ -3,7 +3,7 @@
 namespace Src\Classes;
 use Src\Container\Container;
 use Src\Controllers\ControllerInterface;
-use Src\Controllers\Page404Controller;
+use Src\Controllers\BaseController;
 
 class PageLoader
 {
@@ -11,18 +11,38 @@ class PageLoader
     {
         $container = Container::getInstance();
 
-        $currentPath = trim($uriData['path'], '/');
-
         /** @var ControllerInterface $controller */
         $controller = null;
 
-        if (key_exists($currentPath, $paths)) {
-            $controllerClass = $paths[$currentPath];
-            $controller = $container->create($controllerClass);
-        } else {
-            $controller = $container->create(Page404Controller::class);
+        foreach($paths as $path => $controllerClass) {
+            $params = $this->matchAndGetParams($path, trim($uriData['path'], '/'));
+
+            if(is_null($params)) {
+                continue;
+            }
+
+            /** @var BaseController $instance */
+            $controller = $container->create($controllerClass)->setParams($params);
         }
 
         return $controller;
+    }
+
+    protected function matchAndGetParams(string $path, string $url): ?array
+    {
+        /*
+         * Derives a pattern from a path
+         *      e.g. turns home/{id}/test into #^/home/(?P<id>[^/]+)$#
+         */
+
+        $pattern = preg_replace('/\{(\w+)\}/', '(?P<$1>[^/]+)', $path);
+        $pattern = '#^' . str_replace('\\/', '/', $pattern) . '$#';
+
+        // If pattern is matched it returns an array containing the URL params
+        if(preg_match($pattern, $url, $matches)) {
+            return array_filter($matches, 'is_string', ARRAY_FILTER_USE_KEY);
+        }
+
+        return null;
     }
 }

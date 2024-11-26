@@ -18,6 +18,8 @@ class BaseController
 
     protected Container $container;
 
+    protected array $params = [];
+
     public function __construct(RedirectManager $redirectManager)
     {
         $this->redirectManager = $redirectManager;
@@ -33,6 +35,13 @@ class BaseController
                 $this->redirectManager->redirect('/login');
             }
         }
+    }
+
+    public function setParams(array $params)
+    {
+        $this->params = $params;
+
+        return $this;
     }
 
     public function renderPage(): string

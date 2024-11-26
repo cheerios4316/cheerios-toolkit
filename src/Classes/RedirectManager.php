@@ -48,8 +48,8 @@ class RedirectManager
     /**
      * Registers a redirection
      * 
-     * @param \Src\Routing\Redirection\RedirectionInterface $redirection
-     * @return \Src\Classes\RedirectManager
+     * @param RedirectionInterface $redirection
+     * @return $this
      */
     public function addRedirection(RedirectionInterface $redirection): self
     {
@@ -65,6 +65,7 @@ class RedirectManager
      *
      * @param string $path
      * @param string $controller
+     * 
      * @return $this
      */
     protected function registerController(string $path, string $controller): self
@@ -106,6 +107,12 @@ class RedirectManager
         $this->redirect(self::$redirections[$path]);
     }
 
+    /**
+     * Fetches the controller for a given URI
+     * 
+     * @param string $uri
+     * @return ControllerInterface
+     */
     public function getController(string $uri): ControllerInterface
     {
         $uriData = parse_url($uri);
