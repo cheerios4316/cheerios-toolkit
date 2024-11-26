@@ -9,7 +9,7 @@ class IndexConfiguration
     /** @var InitActionInterface[] */
     protected array $initActions = [];
 
-    /** @var string[] */
+    /** @var class-string<InitActionInterface>[] */
     protected array $initActionClassList = [
         ErrorsInit::class,
         StackTraceInit::class,
