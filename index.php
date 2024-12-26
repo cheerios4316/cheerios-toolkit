@@ -18,6 +18,9 @@ $container = Container::getInstance();
  *
  * 2. Implement/modify the getRoutes() method to bind controllers to routes
  *    example: \Src\Routing\DefaultRouting::getRoutes
+ *
+ * @see \Src\Routing\DefaultRouting::getRoutes()
+ * @see \Src\Classes\IndexConfiguration\RoutingInit::$routings
  */
 
 $initConfig = $container->create(IndexConfiguration::class);
