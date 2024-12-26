@@ -8,9 +8,9 @@ namespace Src\Components\PageComponent\HomePageComponent;
 
 ?>
 
-<div class="home-page-component h-screen">
+<div class="home-page-component h-screen bg-gray-900">
     <?php $this->getHeaderComponent()->render() ?>
     <div class="page-content h-full text-white p-4">
-        aaaa
+        aaa
     </div>
 </div>

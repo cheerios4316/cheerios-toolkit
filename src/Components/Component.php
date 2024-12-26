@@ -151,7 +151,7 @@ class Component
             $namespace = str_replace($base, '', $namespace);
 
             $path = str_replace('\\', '/', $namespace);
-            $basename = basename(get_class($this));
+            $basename = basename(str_replace('\\', '/', get_class($this)));
 
             $this->area = substr($path, 0, -strlen($basename) - 1);
         }
