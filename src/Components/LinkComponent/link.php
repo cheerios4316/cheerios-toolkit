@@ -9,5 +9,5 @@ namespace Src\Components\LinkComponent;
 ?>
 
 <div class="link-component">
-    <a href="<?= $this->getHref() ?>"><?= $this->getText() ?></a>
+    <a href="<?= $this->getHref() ?>" <?= $this->isTargetBlank() ? 'target="_blank"' : '' ?>><?= $this->getText() ?></a>
 </div>

@@ -10,7 +10,7 @@ class DefaultRouting implements RoutingInterface
     {
         return [
             'home' => HomeController::class,
-            'home/{id}/prova' => HomeController::class
+            'home/{id}/prova' => HomeController::class,
         ];
     }
 }

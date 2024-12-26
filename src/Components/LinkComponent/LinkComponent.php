@@ -13,6 +13,8 @@ class LinkComponent extends Component
     
     protected string $text = '';
 
+    protected bool $targetBlank = false;
+
     public function setHref(string $href): self
     {
         $this->href = $href;
@@ -33,5 +35,16 @@ class LinkComponent extends Component
     public function getText(): string
     {
         return $this->text;
+    }
+
+    public function setTargetBlank(bool $targetBlank = true): self
+    {
+        $this->targetBlank = $targetBlank;
+        return $this;
+    }
+
+    public function isTargetBlank(): bool
+    {
+        return $this->targetBlank;
     }
 }

@@ -85,7 +85,6 @@ class Component
      * Renders the Component into the page
      *
      * @return void
-     * @throws ContainerException
      */
     public function render(): void
     {
@@ -97,7 +96,6 @@ class Component
      *
      * @param bool $includeAssets
      * @return string
-     * @throws ContainerException
      */
     public function content(bool $includeAssets = false): string
     {
@@ -159,9 +157,6 @@ class Component
         return $this->area;
     }
 
-    /**
-     * @throws ContainerException
-     */
     protected function getComponentLoader(): ComponentLoader
     {
         if (!$this->componentLoader) {
