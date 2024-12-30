@@ -87,6 +87,7 @@ class PageManager
     {
         $this->controller = $this->redirectManager->getController($_SERVER['REQUEST_URI']);
 
+        // Controller's renderPage() method returns the HTML content of the page
         $html = $this->controller->renderPage();
 
         echo "<!DOCTYPE html>";
