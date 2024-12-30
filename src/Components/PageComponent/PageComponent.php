@@ -18,10 +18,6 @@ class PageComponent extends Component
 
     protected FooterComponent $footerComponent;
 
-    private array $defaultMeta = [
-        "viewport" => "width=device-width, initial-scale=1.0"
-    ];
-
     public function __construct()
     {
         $container = Container::getInstance();
@@ -31,9 +27,6 @@ class PageComponent extends Component
         $this->footerComponent = $container->create(FooterComponent::class);
     }
 
-    /**
-     * @return FooterComponent
-     */
     public function getFooterComponent(): FooterComponent
     {
         return $this->footerComponent;
@@ -42,38 +35,5 @@ class PageComponent extends Component
     public function getHeaderComponent(): HeaderComponent
     {
         return $this->headerComponent;
-    }
-
-    protected function getMetaHtmlTags(): string
-    {
-        $res = [];
-        foreach ($this->getMetaWithDefault() as $key => $val) {
-            if ($key == 'title') {
-                $res[] = "<title>$val</title>";
-            } else {
-                $res[] = "<meta name=\"$key\" content=\"$val\">";
-            }
-        }
-
-        return implode('\n', $res);
-    }
-
-    private function getMetaWithDefault()
-    {
-        return array_merge($this->defaultMeta, $this->getMeta());
-    }
-
-    /**
-     * @return array
-     */
-    protected function getMeta(): array
-    {
-        return [];
-    }
-
-    public function render(): void
-    {
-        echo $this->getMetaHtmlTags();
-        parent::render();
     }
 }

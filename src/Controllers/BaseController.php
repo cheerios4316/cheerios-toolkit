@@ -5,7 +5,7 @@ use Src\Components\Page404Component\Page404Component;
 use Src\Components\PageComponent\PageComponent;
 use Src\Container\Container;
 
-class BaseController
+abstract class BaseController implements ControllerInterface
 {
     /**
      * When true page is restricted to logged users
@@ -17,6 +17,11 @@ class BaseController
     protected static string $url = '';
 
     protected Container $container;
+
+    private array $defaultMeta = [
+        "viewport" => "width=device-width, initial-scale=1.0"
+    ];
+
 
     protected array $params = [];
 
@@ -70,5 +75,32 @@ class BaseController
     public static function getUrl(): string
     {
         return self::$url;
+    }
+
+    public function getMetaHtmlTags(): string
+    {
+        $res = [];
+        foreach ($this->getMetaWithDefault() as $key => $val) {
+            if ($key == 'title') {
+                $res[] = "<title>$val</title>";
+            } else {
+                $res[] = "<meta name=\"$key\" content=\"$val\">";
+            }
+        }
+
+        return implode('', $res);
+    }
+
+    private function getMetaWithDefault(): array
+    {
+        return array_merge($this->defaultMeta, $this->getMeta());
+    }
+
+    /**
+     * @return array
+     */
+    protected function getMeta(): array
+    {
+        return [];
     }
 }

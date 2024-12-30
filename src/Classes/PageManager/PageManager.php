@@ -5,13 +5,17 @@ namespace Src\Classes\PageManager;
 use Src\Classes\PageManager\PageDependency\DependencyFactory;
 use Src\Classes\PageManager\PageDependency\DependencyInterface;
 use Src\Classes\RedirectManager;
+use Src\Controllers\ControllerInterface;
 
 class PageManager
 {
 
+    protected static string $pageLang = 'en';
     protected DependencyFactory $dependencyFactory;
 
     protected RedirectManager $redirectManager;
+
+    protected ?ControllerInterface $controller = null;
 
     /** @var DependencyInterface[] */
     protected static array $dependencies = [];
@@ -74,19 +78,25 @@ class PageManager
     {
         echo "<head>";
         $this->renderDependencies();
+        echo $this->controller->getMetaHtmlTags();
         echo "</head>";
         return $this;
     }
 
     public function renderPage(): void
     {
-        $html = $this->redirectManager->getController($_SERVER['REQUEST_URI'])->renderPage();
+        $this->controller = $this->redirectManager->getController($_SERVER['REQUEST_URI']);
 
+        $html = $this->controller->renderPage();
+
+        echo "<!DOCTYPE html>";
+        echo "<html lang=\"" . self::$pageLang . "\">";
         $this->renderHead();
 
         echo "<body>";
         echo $html;
         echo "</body>";
+        echo "</html>";
     }
 
     private function getDependenciesWithDefault(): array
