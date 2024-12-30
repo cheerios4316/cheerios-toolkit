@@ -23,14 +23,14 @@ class Component
 
     /**
      * Defines whether the component should be disabled or not
-     * 
+     *
      * @var bool
      */
     protected bool $disabled = false;
 
     /**
      * Defines whether data attributes should be rendered automatically
-     * 
+     *
      * @var bool
      */
     protected bool $renderDataAttrs = true;
@@ -38,7 +38,7 @@ class Component
     /**
      * Override this method. This will be executed right
      * before the render of the component
-     * 
+     *
      * @return void
      */
     protected function applySettings()
@@ -48,7 +48,7 @@ class Component
 
     /**
      * Simple hydrator. Pass [keys => values] into.
-     * 
+     *
      * @param array $data
      * @return Component
      */
@@ -66,7 +66,7 @@ class Component
     /**
      * Renders the data attributes in the component.
      * This is called automatically at Component's render
-     * 
+     *
      * @return string
      */
     public function renderDataAttrs(): string
@@ -114,7 +114,6 @@ class Component
     public function parentContent(bool $includeAssets = true): string
     {
         $parentClass = get_parent_class($this);
-        ;
 
         if (!is_subclass_of($parentClass, Component::class)) {
             return '';
@@ -127,7 +126,7 @@ class Component
 
     /**
      * Getter for the Component's files path
-     * 
+     *
      * @return string
      */
     public final function getComponentPath(): string
@@ -137,7 +136,7 @@ class Component
 
     /**
      * Returns the component's path Area
-     * 
+     *
      * @return string
      */
     private function getArea(): string
@@ -168,7 +167,7 @@ class Component
 
     /**
      * Getter for the Component's file names
-     * 
+     *
      * @return string
      */
     public final function getComponentName(): string
@@ -178,7 +177,7 @@ class Component
 
     /**
      * Getter for $items
-     * 
+     *
      * @return array
      */
     public function getItems(): array
@@ -188,7 +187,7 @@ class Component
 
     /**
      * Setter for $items
-     * 
+     *
      * @param array $arr
      * @return Component
      */
@@ -200,7 +199,7 @@ class Component
 
     /**
      * Getter for $title
-     * 
+     *
      * @return string
      */
     public function getTitle(): string
@@ -210,7 +209,7 @@ class Component
 
     /**
      * Setter for $title
-     * 
+     *
      * @param string $title
      * @return Component
      */
@@ -222,7 +221,7 @@ class Component
 
     /**
      * Adds an item to $items
-     * 
+     *
      * @param mixed $item
      * @return Component
      */
@@ -234,7 +233,7 @@ class Component
 
     /**
      * Adds N items to $items
-     * 
+     *
      * @param array $items
      * @return Component
      */
@@ -246,7 +245,7 @@ class Component
 
     /**
      * Getter for the class' name
-     * 
+     *
      * @return string
      */
     protected function getClassName(): string
@@ -256,7 +255,7 @@ class Component
 
     /**
      * Setter for $dataAttrs
-     * 
+     *
      * @param array $dataAttrs
      * @return Component
      */
@@ -268,7 +267,7 @@ class Component
 
     /**
      * Adds an element to $dataAttrs
-     * 
+     *
      * @param string $key
      * @param string $value
      * @return Component
@@ -281,7 +280,7 @@ class Component
 
     /**
      * Disables the component's view
-     * 
+     *
      * @return Component
      */
     public function disable(): self
@@ -292,7 +291,7 @@ class Component
 
     /**
      * Returns true if data attributes should be rendered automatically
-     * 
+     *
      * @return bool
      */
     public function shouldRenderDataAttrs(): bool
