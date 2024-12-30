@@ -54,7 +54,7 @@ const observer = new MutationObserver((mutationsList) => {
 
 
 // Initialize components on DOMContentLoaded
-$(document).ready(() => {
+document.addEventListener('DOMContentLoaded', () => {
     observer.observe(document.body, { childList: true, subtree: true });
 
     initializeComponents();
