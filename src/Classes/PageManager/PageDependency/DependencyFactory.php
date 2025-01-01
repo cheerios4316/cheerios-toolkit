@@ -8,8 +8,6 @@ class DependencyFactory
 
     public function createByType(string $type, string $arg = ''): ?DependencyInterface
     {
-        $container = Container::getInstance();
-
         $dep = null;
 
         switch($type) {
