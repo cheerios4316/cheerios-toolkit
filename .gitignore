@@ -1,6 +1,7 @@
 node_modules
 vendor
 .env
+.idea
 package-lock.json
 composer.lock
 public/css/tailwind.css
