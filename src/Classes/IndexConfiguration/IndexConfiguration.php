@@ -11,12 +11,12 @@ class IndexConfiguration
 
     /** @var class-string<InitActionInterface>[] */
     protected array $initActionClassList = [
+        ServerMethodsInit::class, // Defining this first because there's stuff inside that's needed by some other Inits
         ErrorsInit::class,
         StackTraceInit::class,
         DotenvInit::class,
         RoutingInit::class,
         RedirectionInit::class,
-        ServerMethodsInit::class
     ];
 
     public function __construct()

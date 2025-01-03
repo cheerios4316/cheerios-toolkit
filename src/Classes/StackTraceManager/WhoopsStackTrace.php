@@ -8,16 +8,12 @@ use Whoops\Run;
 
 class WhoopsStackTrace implements StackTraceInterface
 {
-    protected static array $allowedHosts = [
-        'localhost',
-        '127.0.0.1'
-    ];
 
     public function init(): void
     {
         $container = Container::getInstance();
 
-        if (!in_array($_SERVER['HTTP_HOST'], self::$allowedHosts)) {
+        if (!$_SERVER['isDevelop']()) {
             return;
         }
 
