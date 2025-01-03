@@ -88,7 +88,17 @@ class Component
      */
     public function render(): void
     {
+        $isDevelop = $_SERVER['isDevelop']();
+
+        if($isDevelop) {
+            echo "<!-- [" . get_class($this) . '] -->';
+        }
+
         echo $this->content(true);
+
+        if($isDevelop) {
+            echo "<!-- [/" . get_class($this) . '] -->';
+        }
     }
 
     /**
