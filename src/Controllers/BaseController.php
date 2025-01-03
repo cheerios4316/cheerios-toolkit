@@ -2,7 +2,6 @@
 namespace Src\Controllers;
 use Src\Classes\RedirectManager;
 use Src\Components\Page404Component\Page404Component;
-use Src\Components\PageComponent\PageComponent;
 use Src\Container\Container;
 
 abstract class BaseController implements ControllerInterface
@@ -33,7 +32,7 @@ abstract class BaseController implements ControllerInterface
         $this->loginProtect();
     }
 
-    protected function loginProtect()
+    protected function loginProtect(): void
     {
         if($this->isLoginProtected) {
             if($_SESSION['logged'] !== true) {
@@ -42,7 +41,7 @@ abstract class BaseController implements ControllerInterface
         }
     }
 
-    public function setParams(array $params)
+    public function setParams(array $params): static
     {
         $this->params = $params;
 

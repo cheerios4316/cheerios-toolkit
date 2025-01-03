@@ -21,8 +21,10 @@ class PageLoader
                 continue;
             }
 
-            /** @var BaseController $instance */
-            $controller = $container->create($controllerClass)->setParams($params);
+            /** @var BaseController $controller */
+            $controller = $container->create($controllerClass);
+
+            $controller->setParams($params);
         }
 
         return $controller;

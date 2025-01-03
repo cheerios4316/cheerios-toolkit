@@ -76,6 +76,7 @@ class PageManager
 
     public function renderHead(): self
     {
+        /** @noinspection HtmlRequiredTitleElement title can be provided via the getMeta() method in page controllers */
         echo "<head>";
         $this->renderDependencies();
         echo $this->controller->getMetaHtmlTags();
