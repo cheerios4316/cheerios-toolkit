@@ -9,8 +9,8 @@ class DependencyResolver
     /**
      * Resolves the dependencies of a given class and returns them in an array
      * 
-     * @param \ReflectionClass $reflection
-     * @throws \Src\Exceptions\ContainerException
+     * @param ReflectionClass $reflection
+     * @throws ContainerException
      * @return array
      */
     public function resolve(ReflectionClass $reflection): array
