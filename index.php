@@ -23,6 +23,10 @@ $container = Container::getInstance();
  * @see \Src\Classes\IndexConfiguration\RoutingInit::$routings
  */
 
+/**
+  * @TODO refactor this file to handle the HTTP request explicitly instead of doing everything inside the page manager
+  */
+
 $initConfig = $container->create(IndexConfiguration::class);
 $initConfig->init();
 
