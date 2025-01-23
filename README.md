@@ -1,6 +1,12 @@
 # cheerios-toolkit
 my own little website starter toolkit i use for my projects :)
 
+## COMING UP!
+- Seamless support for Single Page Applications
+- Update Tailwind to version 4.0
+- Component generation scripts to create functioning components instantly
+- General component refactor and optimization
+
 ## Run
 Run `composer install`, `npm install` and `npm run build`
 
